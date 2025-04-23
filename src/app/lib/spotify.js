@@ -1,6 +1,6 @@
 export async function getSpotifyToken() {
-    const client_id = process.env.SPOTIFY_CLIENT_ID;
-    const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+    const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+    const client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
   
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
