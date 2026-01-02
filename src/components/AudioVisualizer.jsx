@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import "../styles/audioVisualizer.css";
 
 export default function AudioVisualizer({ audioElement, isPlaying }) {
   const canvasRef = useRef(null);
@@ -62,5 +61,12 @@ export default function AudioVisualizer({ audioElement, isPlaying }) {
     };
   }, [isPlaying, audioElement]);
 
-  return <canvas ref={canvasRef} width="300" height="100" className="audio-visualizer" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      width="300"
+      height="100"
+      className="mt-4 w-full rounded-lg border border-white/10 bg-white/5"
+    />
+  );
 }

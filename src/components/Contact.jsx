@@ -1,43 +1,52 @@
 "use client";
-import "../styles/contact.css";
 import { motion } from "framer-motion";
-import { FaInstagram, FaSpotify, FaYoutube, FaSoundcloud, FaTiktok } from "react-icons/fa";
+import { useLanguage } from "@/app/lib/i18n";
 
 export default function Contact() {
+  const { t } = useLanguage();
   return (
-    <motion.section 
-      className="contact-section"
-      initial={{ opacity: 0, y: 30 }} 
-      animate={{ opacity: 1, y: 0 }} 
+    <motion.section
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-white"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <motion.h1 
-        className="contact-title"
-        initial={{ opacity: 0, y: -10 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.2 }}
+      <motion.div
+        className="relative z-10 flex w-full max-w-[520px] flex-col items-center gap-6 rounded-3xl border border-white/15 bg-white/5 p-10 text-center shadow-[0_30px_80px_rgba(0,0,0,0.6)] backdrop-blur"
+        initial={{ scale: 0.96, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.15 }}
       >
-        DJ GUZZK
-      </motion.h1>
+        <div className="flex flex-col items-center gap-3">
+          <img src="/GUZZK_LOGO.svg" alt="Guzzk logo" className="h-16 w-auto invert opacity-90" />
+          <h1 className="text-3xl tracking-[0.18em]">{t("contact.title")}</h1>
+        </div>
 
-      <motion.div 
-        className="contact-info"
-        initial={{ opacity: 0, y: 10 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.4 }}
-      >
-        <h3>CONTACT</h3>
-        <a href="mailto:guzzk@gmail.com" className="contact-email">guzzk@gmail.com</a>
-      </motion.div>
+        <p className="text-sm uppercase tracking-[0.35em] text-white/60">{t("contact.label")}</p>
 
-  
-      <motion.div 
-        className="contact-footer"
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        transition={{ delay: 0.8 }}
-      >
-        <p>&copy; 2024 GUZZK. All rights reserved.</p>
+        <a
+          href="mailto:guzzk@gmail.com"
+          className="text-xl font-semibold text-white transition hover:text-[#1db954] hover:shadow-[0_0_12px_rgba(29,185,84,0.6)]"
+        >
+          guzzk@gmail.com
+        </a>
+
+        <div className="flex w-full flex-col gap-3 pt-2">
+          <a
+            href="mailto:guzzk@gmail.com"
+            className="inline-flex items-center justify-center rounded-full border border-white bg-white px-6 py-3 text-sm font-bold text-black transition hover:-translate-y-0.5"
+          >
+            Book a Show
+          </a>
+          <a
+            href="#contact"
+            className="inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5"
+          >
+            Press / Media Kit
+          </a>
+        </div>
+
+        <p className="text-xs text-white/50">&copy; 2024 GUZZK. {t("contact.rights")}</p>
       </motion.div>
     </motion.section>
   );
