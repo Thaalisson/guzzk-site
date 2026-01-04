@@ -1,10 +1,39 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { useLanguage } from "@/app/lib/i18n";
 
 export default function AboutMe() {
   const { t } = useLanguage();
   const tags = t("about.tags");
   const highlights = t("about.highlights");
+  const photoRef = useRef(null);
+
+  useEffect(() => {
+    const photo = photoRef.current;
+    if (!photo) return;
+
+    let rafId = 0;
+    const updateParallax = () => {
+      const rect = photo.getBoundingClientRect();
+      const progress = (window.innerHeight - rect.top) / window.innerHeight;
+      const offset = Math.max(-12, Math.min(12, (progress - 0.5) * 18));
+      photo.style.setProperty("--about-parallax", `${offset}px`);
+    };
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateParallax);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
 
   return (
     <section className="relative overflow-hidden text-white" id="about-me">
@@ -91,7 +120,10 @@ export default function AboutMe() {
             <div className="pointer-events-none absolute -inset-14 about-glow about-glow--center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_65%)] blur-3xl opacity-80" />
 
             {/* Premium card */}
-            <div className="about-float-slow relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.75)]">
+            <div
+              ref={photoRef}
+              className="about-photo about-float-slow relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.75)]"
+            >
               {/* Double border look */}
               <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10" />
 
@@ -109,6 +141,7 @@ export default function AboutMe() {
 
               {/* Top highlight */}
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_55%)]" />
+              <div className="about-grain pointer-events-none absolute inset-0" />
             </div>
           </div>
         </div>
@@ -130,6 +163,17 @@ export default function AboutMe() {
 
         .about-glow--center {
           animation-delay: 400ms;
+        }
+
+        .about-photo {
+          transform: translateY(var(--about-parallax, 0px));
+          transition: transform 220ms ease;
+        }
+
+        .about-grain {
+          opacity: 0.18;
+          mix-blend-mode: soft-light;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
         }
 
         .about-float {

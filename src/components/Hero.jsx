@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SiBeatport } from "react-icons/si";
 import { useLanguage } from "@/app/lib/i18n";
@@ -6,6 +7,33 @@ import { useLanguage } from "@/app/lib/i18n";
 export default function Hero() {
   const router = useRouter();
   const { t } = useLanguage();
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const section = heroRef.current;
+    if (!section) return;
+
+    const setSpotlight = (event) => {
+      const rect = section.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      section.style.setProperty("--spot-x", `${x}%`);
+      section.style.setProperty("--spot-y", `${y}%`);
+    };
+
+    const resetSpotlight = () => {
+      section.style.setProperty("--spot-x", "50%");
+      section.style.setProperty("--spot-y", "30%");
+    };
+
+    resetSpotlight();
+    section.addEventListener("mousemove", setSpotlight);
+    section.addEventListener("mouseleave", resetSpotlight);
+    return () => {
+      section.removeEventListener("mousemove", setSpotlight);
+      section.removeEventListener("mouseleave", resetSpotlight);
+    };
+  }, []);
 
   const scrollToReleases = () => {
     const releasesSection = document.getElementById("releases");
@@ -27,7 +55,13 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden text-left text-[#f4f4f4]">
+    <section
+      ref={heroRef}
+      className="relative min-h-screen overflow-hidden text-left text-[#f4f4f4]"
+    >
+      <div className="hero-ambient" aria-hidden="true" />
+      <div className="hero-spotlight" aria-hidden="true" />
+      <div className="hero-particles" aria-hidden="true" />
       <div className="relative z-10 flex min-h-screen items-center px-[8vw] py-[130px]">
         <div className="max-w-[720px]">
           <div className="uppercase tracking-[0.28em] text-[0.9rem] text-white/65">Electronic Music Producer &amp; DJ</div>
@@ -57,9 +91,60 @@ export default function Hero() {
       </div>
 
       <style jsx global>{`
+        .hero-ambient,
+        .hero-spotlight,
+        .hero-particles {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .hero-ambient {
+          background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 40%),
+            radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.04), transparent 45%),
+            radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.05), transparent 50%);
+          animation: heroDrift 18s ease-in-out infinite;
+          opacity: 0.85;
+        }
+
+        .hero-spotlight {
+          background: radial-gradient(
+            circle at var(--spot-x, 50%) var(--spot-y, 30%),
+            rgba(255, 255, 255, 0.08),
+            transparent 45%
+          );
+          mix-blend-mode: screen;
+        }
+
+        .hero-particles {
+          background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+          background-size: 90px 90px;
+          opacity: 0.08;
+          animation: heroParticles 22s linear infinite;
+        }
+
         .hero-pulse {
           animation: heroPulse 2.4s ease-in-out infinite;
           text-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        @keyframes heroDrift {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0);
+          }
+          50% {
+            transform: translate3d(2%, -2%, 0);
+          }
+        }
+
+        @keyframes heroParticles {
+          from {
+            background-position: 0 0;
+          }
+          to {
+            background-position: 180px 180px;
+          }
         }
 
         @keyframes heroPulse {

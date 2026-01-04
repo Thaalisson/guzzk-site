@@ -51,8 +51,9 @@ export default function Music() {
       ref={timelineRef}
       className="relative px-[8%] py-[100px] text-white text-center"
     >
-      <h2 className="mb-[60px] text-3xl font-bold uppercase tracking-[1.5px]">
-        {t("music.title")}
+      <h2 className="music-title mb-[60px] flex flex-col items-center text-3xl font-bold uppercase tracking-[1.5px]">
+        <span>{t("music.title")}</span>
+        <span className="music-wave" aria-hidden="true" />
       </h2>
 
       {/* Container igual ao CSS antigo: max-width + central */}
@@ -72,6 +73,7 @@ export default function Music() {
                 data-timeline-item
                 data-index={index}
                 className={`
+                  music-item
                   relative mx-auto my-[60px] flex w-full max-w-[900px] items-center
                   transition-all duration-700 ease-out
                   ${isLeft ? "lg:flex-row lg:text-left" : "lg:flex-row-reverse lg:text-right"}
@@ -80,7 +82,7 @@ export default function Music() {
               >
                 {/* Spotify (flex 2) */}
                 <div className="flex-[2] m-[15px] w-full">
-                  <div className="h-[250px] w-full overflow-hidden rounded-[10px]">
+                  <div className="music-embed h-[250px] w-full overflow-hidden rounded-[10px]">
                     <iframe
                       src={`https://open.spotify.com/embed/track/${track.id}?utm_source=iframe-api`}
                       width="100%"
@@ -93,7 +95,7 @@ export default function Music() {
                 </div>
 
                 {/* Info (flex 1 + max width 300px) */}
-                <div className="flex-[1] m-[15px] max-w-[300px] w-full rounded-[10px] border border-white/10 bg-white/5 p-5 text-base shadow-[0_6px_15px_rgba(255,255,255,0.08)]">
+                <div className="music-card flex-[1] m-[15px] max-w-[300px] w-full rounded-[10px] border border-white/10 bg-white/5 p-5 text-base shadow-[0_6px_15px_rgba(255,255,255,0.08)]">
                   <h3 className="text-lg font-medium">{track.name}</h3>
 
                   <p className="mt-3 text-white/80">
@@ -115,6 +117,77 @@ export default function Music() {
 
       {/* MOBILE line (como seu CSS antigo) */}
       <style jsx global>{`
+        .music-title {
+          gap: 14px;
+        }
+
+        .music-wave {
+          display: block;
+          height: 6px;
+          width: 180px;
+          border-radius: 999px;
+          background: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.8) 0 6px,
+            rgba(255, 255, 255, 0.15) 6px 12px
+          );
+          background-size: 200% 100%;
+          animation: musicWave 4s linear infinite;
+          opacity: 0.8;
+        }
+
+        .music-embed {
+          position: relative;
+        }
+
+        .music-embed::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          right: 16px;
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          transform: translateY(-50%) scale(0.9);
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0 25%, rgba(0, 0, 0, 0.4) 26% 55%, rgba(255, 255, 255, 0.15) 56% 100%);
+          opacity: 0;
+          transition: opacity 220ms ease, transform 220ms ease;
+          animation: vinylSpin 6s linear infinite;
+          pointer-events: none;
+        }
+
+        .music-item:hover .music-embed::after {
+          opacity: 0.35;
+          transform: translateY(-50%) scale(1);
+        }
+
+        .music-card {
+          transition: transform 220ms ease, box-shadow 220ms ease;
+        }
+
+        .music-item:hover .music-card {
+          transform: translateY(-4px);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        @keyframes musicWave {
+          from {
+            background-position: 0 0;
+          }
+          to {
+            background-position: 200% 0;
+          }
+        }
+
+        @keyframes vinylSpin {
+          from {
+            transform: translateY(-50%) rotate(0deg);
+          }
+          to {
+            transform: translateY(-50%) rotate(360deg);
+          }
+        }
+
         @media (max-width: 768px) {
           [data-timeline-item] {
             flex-direction: column !important;

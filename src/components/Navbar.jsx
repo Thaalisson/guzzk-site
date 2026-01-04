@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
@@ -7,6 +7,11 @@ import { useLanguage } from "@/app/lib/i18n";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [indicatorTop, setIndicatorTop] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const navListRef = useRef(null);
+  const itemRefs = useRef([]);
   const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
 
@@ -38,8 +43,95 @@ export default function Navbar() {
     isOpen ? "translate-x-0" : "-translate-x-full"
   } md:static md:top-auto md:left-auto md:h-auto md:w-full md:flex md:flex-col md:items-center md:justify-start md:translate-x-0 md:bg-transparent md:gap-10 md:py-5`;
 
+  const navItems = useMemo(
+    () => [
+      { id: "home", label: t("nav.home"), href: "/" },
+      { id: "about-me", label: t("nav.about"), href: "/#about-me" },
+      { id: "music", label: t("nav.music"), href: "/#music" },
+      { id: "shows-section", label: t("nav.shows"), href: "/#shows-section" },
+      { id: "contact", label: t("nav.contact"), href: "/#contact" },
+    ],
+    [t]
+  );
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? (window.scrollY / max) * 100 : 0;
+      setScrollProgress(progress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, []);
+
+  useEffect(() => {
+    let rafId = 0;
+    const sections = navItems
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean);
+
+    if (!sections.length) return undefined;
+
+    const updateActive = () => {
+      const scrollY = window.scrollY;
+      const offset = 200;
+      let currentIndex = 0;
+      sections.forEach((section, index) => {
+        if (scrollY + offset >= section.offsetTop) {
+          currentIndex = index;
+        }
+      });
+      setActiveIndex(currentIndex);
+    };
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateActive);
+    };
+
+    updateActive();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [navItems]);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    const index = navItems.findIndex((item) => item.id === hash);
+    if (index !== -1) setActiveIndex(index);
+  }, [navItems]);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      const list = navListRef.current;
+      const item = itemRefs.current[activeIndex];
+      if (!list || !item) return;
+      const listRect = list.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      setIndicatorTop(itemRect.top - listRect.top + itemRect.height / 2);
+    };
+
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [activeIndex, navItems]);
+
   return (
-    <nav className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100] md:h-screen md:w-[96px] md:flex-col md:items-center md:justify-between md:border-b-0 md:border-r md:border-white/10 md:px-0 md:py-6">
+    <nav
+      className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100] md:h-screen md:w-[96px] md:flex-col md:items-center md:justify-between md:border-b-0 md:border-r md:border-white/10 md:px-0 md:py-6"
+      style={{ "--scroll-progress": `${scrollProgress}%` }}
+    >
       <div className="logo md:mb-4">
         <Link href="/" className="inline-flex items-center gap-2 text-white uppercase tracking-[0.22em] text-sm font-semibold md:flex-col">
           <img src="/LogoBlank.png" alt="Guzzk logo" className="h-6 w-auto invert" />
@@ -48,6 +140,9 @@ export default function Navbar() {
       </div>
 
       <span className="sidebar-line pointer-events-none hidden md:block md:h-12 md:w-px md:bg-white/20" aria-hidden="true" />
+      <div className="sidebar-progress pointer-events-none hidden md:block" aria-hidden="true">
+        <span className="sidebar-progress__fill" />
+      </div>
 
       {/* Botão do Menu Hamburguer */}
       <button
@@ -62,22 +157,31 @@ export default function Navbar() {
       </button>
 
       {/* Itens do Menu */}
-      <ul className={`nav-links ${navLinksClass}`}>
-        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
-          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/" onClick={(e) => handleScrollToSection(e, "home")}>{t("nav.home")}</a>
-        </li>
-        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
-          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#about-me" onClick={(e) => handleScrollToSection(e, "about-me")}>{t("nav.about")}</a>
-        </li>
-        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
-          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#music" onClick={(e) => handleScrollToSection(e, "music")}>{t("nav.music")}</a>
-        </li>
-        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
-          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#shows-section" onClick={(e) => handleScrollToSection(e, "shows-section")}>{t("nav.shows")}</a>
-        </li>
-        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
-          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#contact" onClick={(e) => handleScrollToSection(e, "contact")}>{t("nav.contact")}</a>
-        </li>
+      <ul className={`nav-links relative ${navLinksClass}`} ref={navListRef}>
+        <span
+          className="sidebar-indicator pointer-events-none hidden md:block"
+          style={{ top: `${indicatorTop}px` }}
+          aria-hidden="true"
+        />
+        {navItems.map((item, index) => (
+          <li
+            key={item.id}
+            className="md:rotate-180 md:[writing-mode:vertical-rl]"
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+          >
+            <a
+              className={`sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px] ${
+                activeIndex === index ? "sidebar-link--active" : ""
+              }`}
+              href={item.href}
+              onClick={(e) => handleScrollToSection(e, item.id)}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
         <li className="md:mt-4">
           <div className="lang-rail relative">
             <button
@@ -152,9 +256,45 @@ export default function Navbar() {
           animation: sidebarPulse 2.2s ease-in-out infinite;
         }
 
+        .sidebar-progress {
+          position: absolute;
+          left: 50%;
+          top: 110px;
+          bottom: 40px;
+          width: 1px;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-progress__fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: var(--scroll-progress, 0%);
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.15));
+          box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+        }
+
+        .sidebar-indicator {
+          position: absolute;
+          left: 50%;
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          transform: translate(-50%, -50%);
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.65);
+          transition: top 240ms ease;
+        }
+
         .sidebar-link {
           position: relative;
           transition: color 200ms ease, transform 220ms ease;
+        }
+
+        .sidebar-link--active {
+          color: rgba(255, 255, 255, 0.95);
         }
 
         .sidebar-link::after {
