@@ -24,8 +24,10 @@ export default function RootLayout({ children }) {
           {loading ? <SplashScreen /> : (
             <>
               <Navbar />
-              {children}
-              <Footer />
+              <div className="md:pl-[96px]">
+                {children}
+                <Footer />
+              </div>
             </>
           )}
         </LanguageProvider>

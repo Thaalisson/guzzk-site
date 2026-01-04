@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/app/lib/i18n";
 
 export default function Navbar() {
@@ -35,16 +36,18 @@ export default function Navbar() {
 
   const navLinksClass = `fixed top-0 left-0 h-screen w-full bg-black/95 flex flex-col items-center justify-center gap-6 transition-transform duration-300 ${
     isOpen ? "translate-x-0" : "-translate-x-full"
-  } md:static md:h-auto md:w-auto md:flex-row md:translate-x-0 md:bg-transparent md:gap-5`;
+  } md:static md:top-auto md:left-auto md:h-auto md:w-full md:flex md:flex-col md:items-center md:justify-start md:translate-x-0 md:bg-transparent md:gap-10 md:py-5`;
 
   return (
-    <nav className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100]">
-      <div className="logo">
-        <Link href="/" className="inline-flex items-center gap-2 text-white uppercase tracking-[0.22em] text-sm font-semibold">
+    <nav className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100] md:h-screen md:w-[96px] md:flex-col md:items-center md:justify-between md:border-b-0 md:border-r md:border-white/10 md:px-0 md:py-6">
+      <div className="logo md:mb-4">
+        <Link href="/" className="inline-flex items-center gap-2 text-white uppercase tracking-[0.22em] text-sm font-semibold md:flex-col">
           <img src="/LogoBlank.png" alt="Guzzk logo" className="h-6 w-auto invert" />
-          <span className="hidden md:inline">GUZZK</span>
+          <span className="hidden md:block text-[10px] tracking-[0.32em]">GUZZK</span>
         </Link>
       </div>
+
+      <span className="sidebar-line pointer-events-none hidden md:block md:h-12 md:w-px md:bg-white/20" aria-hidden="true" />
 
       {/* Botão do Menu Hamburguer */}
       <button
@@ -60,30 +63,157 @@ export default function Navbar() {
 
       {/* Itens do Menu */}
       <ul className={`nav-links ${navLinksClass}`}>
-        <li><a className="text-white/75 hover:text-white uppercase tracking-[0.08em] text-sm" href="/" onClick={(e) => handleScrollToSection(e, "home")}>{t("nav.home")}</a></li>
-        <li><a className="text-white/75 hover:text-white uppercase tracking-[0.08em] text-sm" href="/#about-me" onClick={(e) => handleScrollToSection(e, "about-me")}>{t("nav.about")}</a></li>
-        <li><a className="text-white/75 hover:text-white uppercase tracking-[0.08em] text-sm" href="/#music" onClick={(e) => handleScrollToSection(e, "music")}>{t("nav.music")}</a></li>
-        <li><a className="text-white/75 hover:text-white uppercase tracking-[0.08em] text-sm" href="/#shows-section" onClick={(e) => handleScrollToSection(e, "shows-section")}>{t("nav.shows")}</a></li>
-        <li><a className="text-white/75 hover:text-white uppercase tracking-[0.08em] text-sm" href="/#contact" onClick={(e) => handleScrollToSection(e, "contact")}>{t("nav.contact")}</a></li>
-        <li>
-          <div className="lang-toggle inline-flex border border-white/15 rounded-full overflow-hidden" role="group" aria-label={t("nav.language")}>
+        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
+          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/" onClick={(e) => handleScrollToSection(e, "home")}>{t("nav.home")}</a>
+        </li>
+        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
+          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#about-me" onClick={(e) => handleScrollToSection(e, "about-me")}>{t("nav.about")}</a>
+        </li>
+        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
+          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#music" onClick={(e) => handleScrollToSection(e, "music")}>{t("nav.music")}</a>
+        </li>
+        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
+          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#shows-section" onClick={(e) => handleScrollToSection(e, "shows-section")}>{t("nav.shows")}</a>
+        </li>
+        <li className="md:rotate-180 md:[writing-mode:vertical-rl]">
+          <a className="sidebar-link text-white/55 hover:text-white uppercase tracking-[0.44em] text-[11px]" href="/#contact" onClick={(e) => handleScrollToSection(e, "contact")}>{t("nav.contact")}</a>
+        </li>
+        <li className="md:mt-4">
+          <div className="lang-rail relative">
             <button
               type="button"
-              className={`px-2.5 py-1 text-xs tracking-[0.08em] ${language === "en" ? "bg-white text-black" : "text-white/70"}`}
-              onClick={() => setLanguage("en")}
+              className="lang-trigger text-white/55 hover:text-white uppercase tracking-[0.4em] text-[10px] md:rotate-180 md:[writing-mode:vertical-rl]"
+              aria-label={t("nav.language")}
             >
-              {t("nav.en")}
+              LANG
             </button>
-            <button
-              type="button"
-              className={`px-2.5 py-1 text-xs tracking-[0.08em] ${language === "pt" ? "bg-white text-black" : "text-white/70"}`}
-              onClick={() => setLanguage("pt")}
-            >
-              {t("nav.pt")}
-            </button>
+
+            <div className="lang-flyout absolute left-full top-1/2 -translate-y-1/2 pl-3 md:flex">
+              <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/70 px-2 py-1 text-[10px] uppercase tracking-[0.22em] text-white/70 backdrop-blur">
+                <button
+                  type="button"
+                  className={`${language === "en" ? "text-white" : "text-white/50"}`}
+                  onClick={() => setLanguage("en")}
+                >
+                  {t("nav.en")}
+                </button>
+                <span className="h-3 w-px bg-white/20" aria-hidden="true" />
+                <button
+                  type="button"
+                  className={`${language === "pt" ? "text-white" : "text-white/50"}`}
+                  onClick={() => setLanguage("pt")}
+                >
+                  {t("nav.pt")}
+                </button>
+              </div>
+            </div>
           </div>
         </li>
+        <li className="md:mt-3 md:flex md:flex-col md:items-center md:gap-2">
+          <span className="sidebar-line sidebar-line--long pointer-events-none md:block md:h-14 md:w-px md:bg-white/30" aria-hidden="true" />
+          <a
+            href="https://www.instagram.com/guzzk/"
+            target="_blank"
+            rel="noreferrer"
+            className="grid h-8 w-8 place-items-center rounded-full border border-white/35 text-white/80 transition hover:text-white hover:border-white/70 hover:scale-105"
+            aria-label="Instagram"
+          >
+            <FaInstagram className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </li>
       </ul>
+
+      <style jsx global>{`
+        .sidebar-line {
+          animation: sidebarGlow 5s ease-in-out infinite;
+          box-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
+        }
+
+        .sidebar-line--long {
+          position: relative;
+          background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.08)
+          );
+        }
+
+        .sidebar-line--long::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 12%;
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.7);
+          box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+          animation: sidebarPulse 2.2s ease-in-out infinite;
+        }
+
+        .sidebar-link {
+          position: relative;
+          transition: color 200ms ease, transform 220ms ease;
+        }
+
+        .sidebar-link::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: -12px;
+          width: 2px;
+          height: 12px;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.18);
+          opacity: 0;
+          transition: opacity 200ms ease;
+        }
+
+        .sidebar-link:hover::after {
+          opacity: 1;
+        }
+
+        .sidebar-link:hover {
+          transform: translateY(-2px);
+        }
+
+        .lang-rail:hover .lang-flyout,
+        .lang-rail:focus-within .lang-flyout {
+          opacity: 1;
+          visibility: visible;
+          transform: translate(0, -50%);
+        }
+
+        .lang-flyout {
+          opacity: 0;
+          visibility: hidden;
+          transform: translate(6px, -50%);
+          transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+        }
+
+        @keyframes sidebarGlow {
+          0%,
+          100% {
+            opacity: 0.65;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes sidebarPulse {
+          0%,
+          100% {
+            transform: translateX(-50%) scale(1);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translateX(-50%) scale(1.6);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </nav>
   );
 }

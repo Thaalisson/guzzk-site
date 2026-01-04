@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { SiBeatport } from "react-icons/si";
 import { useLanguage } from "@/app/lib/i18n";
 
 export default function Hero() {
@@ -30,7 +31,7 @@ export default function Hero() {
       <div className="relative z-10 flex min-h-screen items-center px-[8vw] py-[130px]">
         <div className="max-w-[720px]">
           <div className="uppercase tracking-[0.28em] text-[0.9rem] text-white/65">Electronic Music Producer &amp; DJ</div>
-          <h1 className="mt-4 text-[clamp(3.8rem,10vw,8.6rem)] tracking-[0.08em]">GUZZK</h1>
+          <h1 className="hero-pulse mt-4 text-[clamp(3.8rem,10vw,8.6rem)] tracking-[0.08em]">GUZZK</h1>
           <div className="my-4 h-px w-[min(320px,70%)] bg-white/10"></div>
           <p className="text-[clamp(1rem,2vw,1.25rem)] text-white/70">{t("hero.tagline")}</p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -40,18 +41,7 @@ export default function Hero() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-white bg-white px-5 py-2 text-sm font-bold text-black transition hover:-translate-y-0.5"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                role="img"
-              >
-                <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="2" />
-                <path
-                  d="M9 6h4.5a3.5 3.5 0 010 7H9V6zm0 7h5a3 3 0 010 6H9v-6z"
-                  fill="currentColor"
-                />
-              </svg>
+              <SiBeatport className="h-4 w-4" aria-hidden="true" />
               Latest Release <span aria-hidden="true">-&gt;</span>
             </a>
             <a
@@ -65,6 +55,28 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        .hero-pulse {
+          animation: heroPulse 2.4s ease-in-out infinite;
+          text-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        @keyframes heroPulse {
+          0% {
+            transform: scale(1);
+            text-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
+          }
+          50% {
+            transform: scale(1.015);
+            text-shadow: 0 0 28px rgba(255, 255, 255, 0.2);
+          }
+          100% {
+            transform: scale(1);
+            text-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
+          }
+        }
+      `}</style>
     </section>
   );
 }
