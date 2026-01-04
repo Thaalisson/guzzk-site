@@ -54,6 +54,16 @@ export default function Hero() {
     }
   };
 
+  const scrollToContact = (event) => {
+    event.preventDefault();
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push("/#contact");
+    }
+  };
+
   return (
     <section
       ref={heroRef}
@@ -85,6 +95,13 @@ export default function Hero() {
             >
               <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]"></span>
               Play Demo
+            </a>
+            <a
+              href="/#contact"
+              onClick={scrollToContact}
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-bold text-white/90 transition hover:-translate-y-0.5"
+            >
+              Book a Show
             </a>
           </div>
         </div>

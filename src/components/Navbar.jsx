@@ -129,7 +129,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100] md:h-screen md:w-[96px] md:flex-col md:items-center md:justify-between md:border-b-0 md:border-r md:border-white/10 md:px-0 md:py-6"
+      className="navbar fixed top-0 left-0 w-full bg-[#0b0b0f]/85 border-b border-white/10 backdrop-blur flex items-center justify-between gap-4 px-5 py-3 z-[1100] shadow-[0_10px_30px_rgba(0,0,0,0.45)] md:h-screen md:w-[96px] md:flex-col md:items-center md:justify-between md:border-b-0 md:border-r md:border-white/10 md:px-0 md:py-6 md:shadow-none"
       style={{ "--scroll-progress": `${scrollProgress}%` }}
     >
       <div className="logo md:mb-4">
