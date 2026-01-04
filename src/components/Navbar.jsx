@@ -353,6 +353,32 @@ export default function Navbar() {
             opacity: 1;
           }
         }
+
+        @media (max-width: 768px) {
+          .navbar {
+            height: auto !important;
+            width: 100% !important;
+            flex-direction: row !important;
+          }
+
+          .nav-links {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+            transform: translateX(-100%) !important;
+            background: rgba(0, 0, 0, 0.96) !important;
+          }
+
+          .nav-links.translate-x-0 {
+            transform: translateX(0) !important;
+          }
+
+          .sidebar-progress,
+          .sidebar-indicator {
+            display: none !important;
+          }
+        }
       `}</style>
     </nav>
   );
