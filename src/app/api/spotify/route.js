@@ -9,10 +9,12 @@ export async function GET(req) {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!response.ok) throw new Error("Failed to fetch Spotify data");
+    if (!response.ok) {
+      return Response.json({ error: "Failed to fetch Spotify tracks" }, { status: response.status });
+    }
 
     const data = await response.json();
-    return Response.json(data.tracks);
+    return Response.json(Array.isArray(data?.tracks) ? data.tracks : []);
   } catch (error) {
     return Response.json({ error: "Error fetching data from Spotify" }, { status: 500 });
   }

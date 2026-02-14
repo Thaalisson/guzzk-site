@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const translations = {
@@ -23,10 +23,10 @@ const translations = {
     about: {
       label: "About",
       lede:
-        "Mathéus, known professionally as Guzzk, is a Brazilian DJ and producer based in Miami. His signature blend of Afro House, House, and Melodic House delivers immersive, hypnotic dancefloor moments designed to move the room.",
+        "Matheus, known professionally as Guzzk, is a Brazilian DJ and producer based in Miami. His signature blend of Afro House, House, and Melodic House delivers immersive, hypnotic dancefloor moments designed to move the room.",
       trackLabel: "Now Playing",
       trackTitle: "Passion",
-      trackMeta: "Guzzk · Stereo Productions",
+      trackMeta: "Guzzk - Stereo Productions",
       mission:
         "His mission: inspire and take listeners on an unforgettable sonic journey. With upcoming releases and remixes, Guzzk is shaping the next wave of electronic music.",
       tags: ["Afro House", "Melodic House", "Miami", "Global Grooves"],
@@ -37,11 +37,11 @@ const translations = {
         },
         {
           title: "Iconic Sets",
-          body: "Played at Claptone’s Masquerade.",
+          body: "Played at Claptone's Masquerade.",
         },
         {
           title: "Releases",
-          body: "Released “Passion” under Stereo Productions.",
+          body: "Released \"Passion\" under Stereo Productions.",
         },
         {
           title: "Signature",
@@ -87,7 +87,7 @@ const translations = {
   },
   pt: {
     nav: {
-      home: "Início",
+      home: "Inicio",
       about: "Sobre",
       music: "Jornada",
       shows: "Shows",
@@ -98,33 +98,33 @@ const translations = {
     },
     hero: {
       eyebrow: "DJ / Produtor",
-      tagline: "Afro House. Calor melódico. Noites de Miami.",
-      sub: "Um set hipnótico que mistura grooves globais, linhas profundas e energia de pista.",
+      tagline: "Afro House. Calor melodico. Noites de Miami.",
+      sub: "Um set hipnotico que mistura grooves globais, linhas profundas e energia de pista.",
       ctaListen: "Ouvir Agora",
       ctaBook: "Fechar Show",
     },
     about: {
       label: "Sobre",
       lede:
-        "Mathéus, conhecido como Guzzk, é DJ e produtor brasileiro baseado em Miami. Sua assinatura mistura Afro House, House e Melodic House para criar momentos hipnóticos e imersivos na pista.",
+        "Matheus, conhecido como Guzzk, e DJ e produtor brasileiro baseado em Miami. Sua assinatura mistura Afro House, House e Melodic House para criar momentos hipnoticos e imersivos na pista.",
       trackLabel: "Tocando Agora",
       trackTitle: "Passion",
-      trackMeta: "Guzzk · Stereo Productions",
+      trackMeta: "Guzzk - Stereo Productions",
       mission:
-        "Sua missão: inspirar e levar o público a uma jornada sonora inesquecível. Com lançamentos e remixes a caminho, Guzzk está moldando a próxima onda da música eletrônica.",
+        "Sua missao: inspirar e levar o publico a uma jornada sonora inesquecivel. Com lancamentos e remixes a caminho, Guzzk esta moldando a proxima onda da musica eletronica.",
       tags: ["Afro House", "Melodic House", "Miami", "Grooves Globais"],
       highlights: [
         {
           title: "Palcos",
-          body: "Performances na Miami Music Week e Fórmula 1.",
+          body: "Performances na Miami Music Week e Formula 1.",
         },
         {
-          title: "Sets Icônicos",
-          body: "Apresentação na Masquerade do Claptone.",
+          title: "Sets Iconicos",
+          body: "Apresentacao na Masquerade do Claptone.",
         },
         {
-          title: "Lançamentos",
-          body: "Single “Passion” pela Stereo Productions.",
+          title: "Lancamentos",
+          body: "Single \"Passion\" pela Stereo Productions.",
         },
         {
           title: "Assinatura",
@@ -134,14 +134,14 @@ const translations = {
     },
     releases: {
       listenNow: "Ouvir Agora",
-      listenOn: "Ouça em:",
+      listenOn: "Ouca em:",
       closePreview: "Fechar preview",
       playPreview: "Tocar preview",
       pausePreview: "Pausar preview",
     },
     music: {
       title: "JORNADA MUSICAL",
-      album: "Álbum",
+      album: "Album",
       artist: "Artista",
       spotifyTitle: "Player Spotify: {track}",
     },
@@ -151,12 +151,12 @@ const translations = {
       featuredBody:
         "Trecho de performance em destaque mostrando a energia e a atmosfera do show ao vivo.",
       featuredDate: "Destaque",
-      firstTitle: "Fórmula 1 Miami Grand Prix",
+      firstTitle: "Formula 1 Miami Grand Prix",
       firstBody:
-        "Set ao vivo na Fórmula 1 Miami Grand Prix 2023, trazendo uma experiência poderosa de Afro House e Melodic Techno.",
+        "Set ao vivo na Formula 1 Miami Grand Prix 2023, trazendo uma experiencia poderosa de Afro House e Melodic Techno.",
       secondTitle: "Basel Week - Miami",
       secondBody:
-        "Apresentação exclusiva de Guzzk na Basel Week em Miami, unindo grooves profundos com uma atmosfera hipnótica.",
+        "Apresentacao exclusiva de Guzzk na Basel Week em Miami, unindo grooves profundos com uma atmosfera hipnotica.",
     },
     contact: {
       title: "DJ GUZZK",

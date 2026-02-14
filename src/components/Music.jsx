@@ -12,10 +12,14 @@ export default function Music() {
     async function fetchTracks() {
       try {
         const response = await fetch("/api/spotify");
+        if (!response.ok) {
+          throw new Error(`Spotify API returned ${response.status}`);
+        }
         const data = await response.json();
-        setTracks(data.slice(0, 6));
+        setTracks(Array.isArray(data) ? data.slice(0, 6) : []);
       } catch (error) {
         console.error("Erro ao buscar musicas do Spotify:", error);
+        setTracks([]);
       }
     }
     fetchTracks();

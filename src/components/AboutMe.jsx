@@ -1,39 +1,10 @@
-"use client";
-import { useEffect, useRef } from "react";
+﻿"use client";
 import { useLanguage } from "@/app/lib/i18n";
 
 export default function AboutMe() {
   const { t } = useLanguage();
   const tags = t("about.tags");
   const highlights = t("about.highlights");
-  const photoRef = useRef(null);
-
-  useEffect(() => {
-    const photo = photoRef.current;
-    if (!photo) return;
-
-    let rafId = 0;
-    const updateParallax = () => {
-      const rect = photo.getBoundingClientRect();
-      const progress = (window.innerHeight - rect.top) / window.innerHeight;
-      const offset = Math.max(-12, Math.min(12, (progress - 0.5) * 18));
-      photo.style.setProperty("--about-parallax", `${offset}px`);
-    };
-
-    const handleScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updateParallax);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, []);
 
   return (
     <section className="relative overflow-hidden text-white" id="about-me">
@@ -76,7 +47,7 @@ export default function AboutMe() {
         
 
           {/* Highlights */}
-          <div className="about-float rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_18px_40px_rgba(0,0,0,0.45)] backdrop-blur">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_18px_40px_rgba(0,0,0,0.45)] backdrop-blur">
             <p className="text-xs uppercase tracking-[0.3em] text-white/60">
               {t("about.highlightsLabel") || "Highlights"}
             </p>
@@ -87,7 +58,7 @@ export default function AboutMe() {
                     <li key={item.title} className="flex gap-4">
                       {/* Icon bullet instead of dot */}
                       <span className="mt-1 grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/5 text-white/70">
-                        {idx === 0 ? "★" : idx === 1 ? "♬" : idx === 2 ? "⚡" : "◆"}
+                        {idx === 0 ? "*" : idx === 1 ? "~" : idx === 2 ? "+" : "#"}
                       </span>
 
                       <div>
@@ -105,10 +76,10 @@ export default function AboutMe() {
           {/* Mission / Signature blockquote */}
           <blockquote className="about-fade relative mt-2 border-l-2 border-white/20 pl-6">
             <p className="text-[1.05rem] italic leading-relaxed text-white/85">
-              “{t("about.mission")}”
+              "{t("about.mission")}"
             </p>
             <span className="mt-3 block text-xs uppercase tracking-[0.28em] text-white/45">
-              — GUZZK
+              - GUZZK
             </span>
           </blockquote>
         </div>
@@ -120,9 +91,7 @@ export default function AboutMe() {
             <div className="pointer-events-none absolute -inset-14 about-glow about-glow--center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_65%)] blur-3xl opacity-80" />
 
             {/* Premium card */}
-            <div
-              ref={photoRef}
-              className="about-photo about-float-slow relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.75)]"
+            <div              className="about-photo relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.75)]"
             >
               {/* Double border look */}
               <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10" />
@@ -149,25 +118,12 @@ export default function AboutMe() {
 
       <style jsx global>{`
         .about-glow {
-          animation: aboutGlow 12s ease-in-out infinite;
+          animation: none;
           opacity: 0.9;
         }
-
-        .about-glow--top {
-          animation-delay: 0ms;
-        }
-
-        .about-glow--right {
-          animation-delay: 800ms;
-        }
-
-        .about-glow--center {
-          animation-delay: 400ms;
-        }
-
         .about-photo {
-          transform: translateY(var(--about-parallax, 0px));
-          transition: transform 220ms ease;
+          transform: none;
+          transition: none;
         }
 
         .about-grain {
@@ -175,15 +131,6 @@ export default function AboutMe() {
           mix-blend-mode: soft-light;
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
         }
-
-        .about-float {
-          animation: aboutFloat 8s ease-in-out infinite;
-        }
-
-        .about-float-slow {
-          animation: aboutFloatSlow 12s ease-in-out infinite;
-        }
-
         .about-chip {
           animation: aboutFadeUp 700ms ease forwards;
           opacity: 0;
@@ -197,38 +144,6 @@ export default function AboutMe() {
           transform: translateY(14px);
         }
 
-        @keyframes aboutGlow {
-          0% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-          50% {
-            transform: translate3d(1.5%, -1.5%, 0) scale(1.04);
-          }
-          100% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-        }
-
-        @keyframes aboutFloat {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
-          50% {
-            transform: translate3d(0, -8px, 0);
-          }
-        }
-
-        @keyframes aboutFloatSlow {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
-          50% {
-            transform: translate3d(0, -12px, 0);
-          }
-        }
-
         @keyframes aboutFadeUp {
           to {
             opacity: 1;
@@ -239,3 +154,5 @@ export default function AboutMe() {
     </section>
   );
 }
+
+

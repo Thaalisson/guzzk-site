@@ -1,5 +1,5 @@
 "use client";
-import { FaSpotify, FaYoutube, FaSoundcloud, FaInstagram, FaDownload } from "react-icons/fa";
+import { FaSpotify, FaYoutube, FaSoundcloud, FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/app/lib/i18n";
 
 export default function Footer() {
@@ -24,6 +24,17 @@ export default function Footer() {
       </div>
 
       <p className="mt-8 text-center text-sm">&copy; 2024 GUZZK. {t("footer.rights")}</p>
+      <p className="mt-2 text-center text-xs text-white/55">
+        Developer by{" "}
+        <a
+          href="https://www.instagram.com/devthalisson/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/75 underline underline-offset-4 transition hover:text-white"
+        >
+          DevThalisson
+        </a>
+      </p>
     </footer>
   );
 }
