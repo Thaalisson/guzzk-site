@@ -64,6 +64,10 @@ const translations = {
     },
     shows: {
       title: "Live Performances",
+      featuredTitle: "Featured Live Set",
+      featuredBody:
+        "Highlight performance clip showcasing the energy and atmosphere from the live show.",
+      featuredDate: "Featured",
       firstTitle: "Formula 1 Miami Grand Prix",
       firstBody:
         "Live set at Formula 1 Miami Grand Prix 2023, bringing a powerful Afro House & Melodic Techno experience.",
@@ -143,6 +147,10 @@ const translations = {
     },
     shows: {
       title: "Performances ao Vivo",
+      featuredTitle: "Set em Destaque",
+      featuredBody:
+        "Trecho de performance em destaque mostrando a energia e a atmosfera do show ao vivo.",
+      featuredDate: "Destaque",
       firstTitle: "Fórmula 1 Miami Grand Prix",
       firstBody:
         "Set ao vivo na Fórmula 1 Miami Grand Prix 2023, trazendo uma experiência poderosa de Afro House e Melodic Techno.",

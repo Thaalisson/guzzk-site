@@ -7,6 +7,13 @@ export default function Shows() {
 
   const shows = [
     {
+      id: "show-0",
+      video: "https://www.youtube.com/embed/4AdHy9p47DA?rel=0&autoplay=0&showinfo=0",
+      title: t("shows.featuredTitle"),
+      body: t("shows.featuredBody"),
+      date: t("shows.featuredDate"),
+    },
+    {
       id: "show-1",
       video: "https://www.youtube.com/embed/Rljra1NS61o?rel=0&autoplay=0&showinfo=0",
       title: t("shows.firstTitle"),
